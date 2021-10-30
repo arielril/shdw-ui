@@ -10,13 +10,9 @@
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 5px;
-  width: 25%;
 }
 
 .label-input {
-  border: 2px solid black;
-  padding: 3px;
-  margin-bottom: 5px;
   width: 75%;
 }
 
@@ -24,6 +20,6 @@
   width: 50%;
   margin-left: 25%;
   margin-right: 25%;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 

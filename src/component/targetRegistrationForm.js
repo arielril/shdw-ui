@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
+import { Form as BForm, Button } from 'react-bootstrap';
 import './registration.css';
 
 export default class TargetRegistrationForm extends React.Component {
@@ -21,8 +22,7 @@ export default class TargetRegistrationForm extends React.Component {
 
   render() {
     return (
-      <div style={{ border: '3px solid black' }} >
-        <header className="header">Register a new target</header>
+      <div >
         <Formik
           initialValues={{ host_name: '', comment: '' }}
           onSubmit={
@@ -30,6 +30,7 @@ export default class TargetRegistrationForm extends React.Component {
               await new Promise(resolve => setTimeout(resolve, 500));
               alert(JSON.stringify(values, null, 2));
               setSubmitting(false);
+              this.props.handleNewTargetButton(true);
             }
           }
         >
@@ -39,10 +40,10 @@ export default class TargetRegistrationForm extends React.Component {
             handleChange,
             isSubmitting,
           }) => (
-            <form onSubmit={handleSubmit} >
-              <div />
-              <br />
-              <label className="label" style={{ paddingRight: '42px' }}>Host:</label>
+            <Form onSubmit={handleSubmit} >
+              <BForm.Label column sm='2'>
+                Host:
+              </BForm.Label>
               <Field
                 className="label-input"
                 name="host_name"
@@ -52,7 +53,9 @@ export default class TargetRegistrationForm extends React.Component {
                 onChange={handleChange}
               />
               <br />
-              <label className="label">Comment:</label>
+              <BForm.Label column sm='2'>
+                Comment:
+              </BForm.Label>
               <Field
                 className="label-input"
                 name="comment"
@@ -61,16 +64,14 @@ export default class TargetRegistrationForm extends React.Component {
                 type="text"
                 onChange={handleChange}
               />
-              <div />
-              <br />
-              <button
+              <Button
                 type="submit"
                 className="button"
                 disabled={isSubmitting}
               >
                 Register
-              </button>
-            </form>
+              </Button>
+            </Form>
           )}
         </Formik>
       </div>
