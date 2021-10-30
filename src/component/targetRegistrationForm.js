@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Form as BForm, Button } from 'react-bootstrap';
@@ -10,6 +11,7 @@ export default class TargetRegistrationForm extends React.Component {
       host_name: '',
       comment: '',
     };
+    this.orchestratorBaseUrl = 'http://localhost:3001/v1';
   }
 
   handleHostNameChange(ev) {
@@ -20,6 +22,18 @@ export default class TargetRegistrationForm extends React.Component {
     this.setState({ comment: ev.target.value });
   }
 
+  registerNewTarget = async ({ host_name, comment }) => {
+    const registrationResult = await axios.post(
+      `${this.orchestratorBaseUrl}/target/register`,
+      {
+        host: host_name,
+        comment,
+      },
+    );
+
+    console.log('##>> registration result >>', JSON.stringify(registrationResult, null, 2));
+  };
+
   render() {
     return (
       <div >
@@ -27,10 +41,20 @@ export default class TargetRegistrationForm extends React.Component {
           initialValues={{ host_name: '', comment: '' }}
           onSubmit={
             async (values, { setSubmitting }) => {
-              await new Promise(resolve => setTimeout(resolve, 500));
-              alert(JSON.stringify(values, null, 2));
+
+              // const targetResult = await this.registerNewTarget(values);
+
+              const targetResult = await new Promise(resolve => setTimeout(resolve({
+                uid: '72BADEDD-A00A-47C6-8E22-79F1FA34409D',
+              }), 500));
+              alert(JSON.stringify({ values, targetResult }, null, 2));
+
               setSubmitting(false);
-              this.props.handleNewTargetButton(true);
+
+              localStorage.setItem('target', JSON.stringify(targetResult));
+
+              this.props.hideNewTargetButton(true);
+              this.props.closeModal();
             }
           }
         >

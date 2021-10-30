@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import Graph from './graph';
 import Modal from './modal';
+import RunNmapForm from './runNmapForm';
 import TargetRegistrationForm from './targetRegistrationForm';
 
 export default class Dashboard extends React.Component {
@@ -10,10 +11,14 @@ export default class Dashboard extends React.Component {
     this.state = {
       showRegistration: false,
       targetIsRegistered: false,
+      showNmapScanForm: false,
     };
-    this.showRegistrationModal = this.showRegistrationModal.bind(this);
-    this.hideRegistrationModal = this.hideRegistrationModal.bind(this);
   }
+
+  resetEnvironment = () => {
+    this.setState({ targetIsRegistered: false });
+    localStorage.removeItem('target');
+  };
 
   showRegistrationModal = () => {
     this.setState({ showRegistration: true });
@@ -23,9 +28,12 @@ export default class Dashboard extends React.Component {
     this.setState({ showRegistration: false });
   };
 
-  handleTargetRegistration = (result) => {
+  hideTargetRegistration = (result) => {
     this.setState({ targetIsRegistered: result });
   };
+
+  showNmapScanModal = () => { this.setState({ showNmapScanForm: true }); };
+  hideNmapScanModal = () => { this.setState({ showNmapScanForm: false }); };
 
   render() {
     return (
@@ -37,7 +45,7 @@ export default class Dashboard extends React.Component {
             marginTop: '10px',
           }}
           type="button"
-          onClick={() => { this.setState({ targetIsRegistered: false }); }}
+          onClick={this.resetEnvironment}
           variant="danger"
         >
           Reset
@@ -54,14 +62,37 @@ export default class Dashboard extends React.Component {
           onClick={this.showRegistrationModal}>
           Register a new Target
         </Button>
+        <Button
+          style={{
+            float: 'right',
+            marginRight: '10px',
+            marginTop: '10px',
+          }}
+          hidden={!this.state.targetIsRegistered}
+          type="button"
+          variant="warning"
+          onClick={this.showNmapScanModal}>
+          Run Nmap Scan on target
+        </Button>
         <h1 style={{ marginLeft: '10px', marginTop: '10px' }} >Shadow Blade (SHDW)</h1>
         <Modal
           show={this.state.showRegistration}
           handleClose={this.hideRegistrationModal}
-          style={{ width: '30%' }}
           title='Register a new target'
+          animation={false}
         >
-          <TargetRegistrationForm handleNewTargetButton={this.handleTargetRegistration.bind(this)} />
+          <TargetRegistrationForm
+            hideNewTargetButton={this.hideTargetRegistration.bind(this)}
+            closeModal={this.hideRegistrationModal.bind(this)}
+          />
+        </Modal>
+        <Modal
+          show={this.state.showNmapScanForm}
+          handleClose={this.hideNmapScanModal}
+          title='Nmap Options'
+          animation={false}
+        >
+          <RunNmapForm />
         </Modal>
         <Graph />
       </>
