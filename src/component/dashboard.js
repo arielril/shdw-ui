@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import Graph from './graph';
+import CustomNode from './graph/customNode';
+import Graph from './graph/graph';
 import Modal from './modal';
 import RunNmapForm from './runNmapForm';
 import TargetRegistrationForm from './targetRegistrationForm';
@@ -95,6 +96,14 @@ export default class Dashboard extends React.Component {
           <RunNmapForm />
         </Modal>
         <Graph />
+        {/* <CustomNode node={{
+          name: "driver.htb",
+          id: "6af3afa1-31f8-4dd2-981c-7908c6a331b8",
+          tags: [
+            "target-host",
+            "This is Writer from HackTheBox"
+          ]
+        }} /> */}
       </>
     );
   }
