@@ -16,13 +16,18 @@ export default class Dashboard extends React.Component {
       targetIsRegistered: false,
       showNmapScanForm: false,
       showFfufScanForm: false,
-      graph_data: graphData,
+      graph_data: {}, // graphData,
       clickedNode: {},
     };
   }
 
   resetEnvironment = () => {
-    this.setState({ targetIsRegistered: false });
+    this.setState({
+      targetIsRegistered: false,
+      graph_data: { nodes: [], links: [] },
+      showNmapScanForm: false,
+      showFfufScanForm: false,
+    });
     localStorage.removeItem('target');
   };
 
@@ -66,6 +71,8 @@ export default class Dashboard extends React.Component {
       console.log('failed to get graph data. Error:', error);
     }
   };
+
+  componentDidMount = () => { this.doRefreshGraphData(); };
 
   render() {
     return (
@@ -127,6 +134,7 @@ export default class Dashboard extends React.Component {
         >
           <RunNmapForm
             refreshGraphData={this.doRefreshGraphData.bind(this)}
+            hideSelf={this.hideNmapScanModal.bind(this)}
           />
         </Modal>
         <Modal
@@ -137,6 +145,7 @@ export default class Dashboard extends React.Component {
           <RunFfufForm
             refreshGraphData={this.doRefreshGraphData.bind(this)}
             clickedNode={this.state.clickedNode}
+            hideSelf={this.hideFfufScanModal.bind(this)}
           />
         </Modal>
         <Graph

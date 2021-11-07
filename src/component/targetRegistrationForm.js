@@ -45,7 +45,8 @@ export default class TargetRegistrationForm extends React.Component {
               try {
                 const targetResult = await this.registerNewTarget(values);
 
-                alert(JSON.stringify({ values, targetResult }, null, 2));
+                // alert(JSON.stringify({ values, targetResult }, null, 2));
+                console.info('registered new target --', JSON.stringify({ values, targetResult }, null, 2));
 
                 setSubmitting(false);
 

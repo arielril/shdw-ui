@@ -36,7 +36,13 @@ export default class RunFfufForm extends React.Component {
                   `${this.orchestratorBaseUrl}/targets/${targetHost}`,
                   {
                     action: 'WEB_PATH_DISCOVERY',
-                    options: values,
+                    options: {
+                      ...values,
+                      start_node: {
+                        uid: R.path(['clickedNode', 'uid'], this.props),
+                        port: R.path(['clickedNode', 'port'], this.props),
+                      }
+                    },
                   },
                 );
 
@@ -53,6 +59,8 @@ export default class RunFfufForm extends React.Component {
                 }));
               } finally {
                 setSubmitting(false);
+                this.props.refreshGraphData();
+                this.props.hideSelf();
               }
             }
           }
@@ -94,8 +102,9 @@ export default class RunFfufForm extends React.Component {
                   name='ignore_status'
                   value={values.ignore_status}
                   onChange={(is) => {
-                    console.log('ignore status', is);
-                    setFieldValue('ignore_status', is);
+                    const ignore_list = is.map(Number);
+                    console.log('ignore status', ignore_list);
+                    setFieldValue('ignore_status', ignore_list);
                   }}
                 />
                 <br />

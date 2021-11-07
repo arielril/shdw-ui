@@ -49,6 +49,7 @@ export default class RunNmapForm extends React.Component {
                 setSubmitting(false);
                 console.debug('run nmap form - refreshing graph data');
                 this.props.refreshGraphData();
+                this.props.hideSelf();
               }
             }
           }
