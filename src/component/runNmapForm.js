@@ -1,6 +1,9 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Form as BForm, Button } from 'react-bootstrap';
+import * as R from 'ramda';
+import axios from 'axios';
+
 import './nmapForm.css';
 
 export default class RunNmapForm extends React.Component {
@@ -18,9 +21,35 @@ export default class RunNmapForm extends React.Component {
           }}
           onSubmit={
             async (values, { setSubmitting }) => {
-              await new Promise(resolve => setTimeout(resolve, 500));
-              alert(JSON.stringify({ values }, null, 2));
-              setSubmitting(false);
+              try {
+                const local = localStorage.getItem('target') || '{}';
+                const targetHost = R.pipe(
+                  JSON.parse,
+                  R.prop('uid'),
+                )(local);
+
+                const nmapRunResult = await axios.put(
+                  `${this.orchestratorBaseUrl}/targets/${targetHost}`,
+                  {
+                    action: 'NET_SCAN',
+                    options: values,
+                  },
+                );
+
+                // alert(JSON.stringify({ nmapRunResult, values }, null, 2));
+                console.info('successful execution of nmap --', JSON.stringify({
+                  values,
+                  result: nmapRunResult,
+                }));
+              } catch (error) {
+                const errMsg = `failed to execute nmap. Error: ${error}`;
+                console.error(errMsg);
+                alert(JSON.stringify({ error: errMsg, values }));
+              } finally {
+                setSubmitting(false);
+                console.debug('run nmap form - refreshing graph data');
+                this.props.refreshGraphData();
+              }
             }
           }
         >

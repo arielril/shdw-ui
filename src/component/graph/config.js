@@ -5,11 +5,10 @@ import CustomNode from './customNode';
  */
 const config = {
   directed: true,
-  automaticRearrangeAfterDropNode: true,
   linkHighlightBehavior: true,
   nodeHighlightBehavior: true,
   initialZoom: 1,
-  minZoom: 1,
+  minZoom: .2,
   maxZoom: 12,
   width: window.innerWidth,
   height: window.innerHeight / 1.3,
@@ -34,9 +33,9 @@ const config = {
     fontSize: 10,
   },
   d3: {
-    alphaTarget: 0.5,
-    gravity: -250,
-    linkLength: 200,
+    alphaTarget: 0,
+    gravity: -300,
+    linkLength: 300,
     linkStrength: 2,
   },
 };

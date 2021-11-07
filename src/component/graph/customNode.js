@@ -13,12 +13,6 @@ import './customNode.css';
  * @param {string[]} props.node.tags
  */
 const CustomNode = ({ node }) => {
-  /**
-   * @param {string[]} tags 
-   * @returns {string}
-   */
-  const formatTags = (tags = []) => tags.join(';');
-
   const renderTags = (tags = []) => (
     <Tooltip>
       {JSON.stringify(tags)}
