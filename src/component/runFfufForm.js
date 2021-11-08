@@ -96,6 +96,9 @@ export default class RunFfufForm extends React.Component {
                 </BForm.Label>
                 <br />
 
+                <BForm.Label>
+                  Ignore HTTP status code (-fc)
+                </BForm.Label>
                 {/* Ignore status */}
                 {/* https://codesandbox.io/s/9jl3722xjw?file=/src/index.js */}
                 <TagsInput
